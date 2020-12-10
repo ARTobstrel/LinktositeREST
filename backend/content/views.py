@@ -1,10 +1,11 @@
 from django.contrib.auth.models import User
-from django.db import models
-from rest_framework import generics, permissions
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from .models import Category, UnauthorizedUserLink, Version, Link
-from .serializers import *
+from .permissions import IsOwner
+from .serializers import CategorySerializer, CreateCategorySerializer, UserSerializer, LinkSerializer, \
+    CreateLinkSerializer, UnauthorizedUserLinkSerializer, VersionSerializer, CategoryAuthUserSerializer
 
 
 # Действия с пользователем
@@ -16,7 +17,6 @@ class UserRetrieveView(generics.RetrieveAPIView):
 
 class UserCreateView(generics.CreateAPIView):
     """Создание пользователя"""
-    queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
@@ -24,19 +24,21 @@ class UserUpdateView(generics.UpdateAPIView):
     """Редактирование пользователя"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsOwner,)
 
 
 class UserDeleteView(generics.DestroyAPIView):
     """Удаление пользователя"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAdminUser,)
+    permission_classes = (IsAdminUser, IsOwner)
 
 
 class UserListView(generics.ListAPIView):
     """Список всех пользователей"""
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (IsAdminUser,)
 
 
 # Действия с категориями
@@ -44,8 +46,7 @@ class CategoryRetrieveView(generics.RetrieveAPIView):
     """Вывод категории по id"""
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-
-    # permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwner)
 
 
 class CategoryCreateView(generics.CreateAPIView):
@@ -59,14 +60,14 @@ class CategoryUpdateView(generics.UpdateAPIView):
     """Редактирование категории"""
     queryset = Category.objects.all()
     serializer_class = CreateCategorySerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwner)
 
 
 class CategoryDeleteView(generics.DestroyAPIView):
     """Удаление категории"""
     queryset = Category.objects.all()
     serializer_class = CreateCategorySerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwner)
 
 
 class CategoryListView(generics.ListAPIView):
@@ -75,13 +76,15 @@ class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
 
 
-class CategoryUserListView(generics.ListAPIView):
-    """Список всех категорий авторизованного пользователя"""
-    serializer_class = CategorySerializer
+class CategoryAuthUserListView(generics.ListAPIView):
+    """Список всех категорий авторизованного пользователя с добавлением линков"""
+    serializer_class = CategoryAuthUserSerializer
 
     def get_queryset(self):
         """вывод только тех категорий которые принадлежат авторизованному пользователю"""
         return Category.objects.filter(owner=self.request.user)
+
+    permission_classes = (IsAuthenticated,)
 
 
 # Действия с линками
@@ -89,6 +92,7 @@ class LinkRetrieveView(generics.RetrieveAPIView):
     """Вывод линки по id"""
     serializer_class = LinkSerializer
     queryset = Link.objects.all()
+    permission_classes = (IsAuthenticated,)
 
 
 class LinkCreateView(generics.CreateAPIView):
@@ -99,7 +103,6 @@ class LinkCreateView(generics.CreateAPIView):
         return Category.objects.filter(category=self.request.user)
 
     permission_classes = (IsAuthenticated,)
-
 
 
 class LinkUpdateView(generics.UpdateAPIView):
@@ -117,15 +120,34 @@ class LinkDeleteView(generics.DestroyAPIView):
 
 
 class LinkListView(generics.ListAPIView):
-    """Вывод всех линков всех пользователей"""
+    """Линки всех пользователей"""
     serializer_class = LinkSerializer
     queryset = Link.objects.all()
     permission_classes = (IsAdminUser,)
 
 
 class LinkListUserView(generics.ListAPIView):
-    """Вывод всех линков авторизованного пользователя"""
+    """Линки авторизованного пользователя"""
     serializer_class = LinkSerializer
 
     def get_queryset(self):
         return Link.objects.filter(category__owner=self.request.user)
+
+    permission_classes = (IsAuthenticated,)
+
+
+# Линки для неавторизованного пользователя
+class UnauthorizedUserLinkView(generics.ListAPIView):
+    """Линки для неавторизованного пользователя"""
+    serializer_class = UnauthorizedUserLinkSerializer
+    queryset = UnauthorizedUserLink.objects.all()
+
+
+# Не работает
+class VersionView(generics.ListAPIView):
+    """Версия и год обновления"""
+    serializer_class = VersionSerializer
+
+    def get_queryset(self):
+        """Получение последней версии"""
+        return Version.objects.filter(id=Version.objects.all().last().id)

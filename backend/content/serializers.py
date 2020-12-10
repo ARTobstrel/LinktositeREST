@@ -1,32 +1,51 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import Category, Link
+from .models import Category, Link, UnauthorizedUserLink, Version
 
 
 class UserSerializer(serializers.ModelSerializer):
-    """Список пользователей"""
+    """Пользователь"""
 
     class Meta:
         model = User
         fields = ['id', 'username', 'first_name', 'last_name']
 
 
+class LinkSetSerializer(serializers.ModelSerializer):
+    """сет линков принадлежащих конкретной категории"""
+
+    class Meta:
+        model = Link
+        fields = ['title', 'link', 'image']
+
+
 class CategorySerializer(serializers.ModelSerializer):
     """Список всех категорий"""
     owner = UserSerializer()
+    link_set = serializers.ManyRelatedField(child_relation=LinkSetSerializer())  # уже ближе но нето
 
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id', 'name', 'owner', 'link_set']
+
+
+class CategoryAuthUserSerializer(serializers.ModelSerializer):
+    """Категории авторизованного пользователя"""
+    link_set = serializers.ManyRelatedField(child_relation=LinkSetSerializer())
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'link_set']
 
 
 class CreateCategorySerializer(serializers.ModelSerializer):
     """Категория для редактирования"""
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Category
-        fields = '__all__'
+        exclude = ('slug',)
 
 
 class LinkSerializer(serializers.ModelSerializer):
@@ -35,7 +54,7 @@ class LinkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Link
-        exclude = ('slug',)
+        fields = '__all__'
 
 
 class CreateLinkSerializer(serializers.ModelSerializer):
@@ -44,3 +63,19 @@ class CreateLinkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Link
         exclude = ('slug',)
+
+
+class UnauthorizedUserLinkSerializer(serializers.ModelSerializer):
+    """Линки для неавторизованного пользователя"""
+
+    class Meta:
+        model = UnauthorizedUserLink
+        exclude = ('slug',)
+
+
+class VersionSerializer(serializers.ModelSerializer):
+    """Версия и год"""
+
+    class Meta:
+        model = Version
+        fields = '__all__'

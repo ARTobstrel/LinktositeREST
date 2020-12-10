@@ -16,7 +16,7 @@ urlpatterns = [
     path('category/update/<int:pk>', views.CategoryUpdateView.as_view()),
     path('category/delete/<int:pk>', views.CategoryDeleteView.as_view()),
     path('category/all/', views.CategoryListView.as_view()),
-    path('category/user/all/', views.CategoryUserListView.as_view()),
+    path('category/user/all/', views.CategoryAuthUserListView.as_view()),
 
     # Link
     path('link/<int:pk>/', views.LinkRetrieveView.as_view()),
@@ -26,4 +26,8 @@ urlpatterns = [
     path('link/all/', views.LinkListView.as_view()),
     path('link/user/all/', views.LinkListUserView.as_view()),
 
+    path('links/', views.UnauthorizedUserLinkView.as_view()),
+
+    # Version
+    path('version/last/', views.VersionView.as_view()),
 ]
