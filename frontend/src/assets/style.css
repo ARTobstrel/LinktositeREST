@@ -1,0 +1,510 @@
+/*Общие стили*/
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    outline: none;
+}
+
+html {
+    font-size: 1px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button:active,
+button:focus {
+    outline: none;
+}
+
+button::-moz-focus-inner {
+    border: 0;
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+    background: rgb(255, 250, 240);
+    font-family: Ubuntu, sans-serif;
+}
+
+.hide_elem {
+    display: none;
+}
+
+/*Стили для базового шаблона*/
+.header {
+    margin: 0 auto;
+    line-height: 1rem;
+    width: 100%;
+    font: 16rem Verdana, Geneva, sans-serif;
+}
+
+.screen {
+    height: 100%;
+
+}
+
+.logo {
+    margin: 3em 10em;
+    text-shadow: 2px 2px 10px black;
+    transition: 0.5s;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.logo__name {
+    font-size: 34rem;
+    cursor: pointer;
+}
+
+.logo__username {
+    color: #10106d;
+}
+
+/*Панель управления*/
+.usermenu {
+    position: fixed;
+    width: 100%;
+    height: auto;
+    bottom: 70rem;
+    left: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.usermenu_elem {
+    width: auto;
+    /*height: 100%;*/
+    margin: 0 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*Кнопка на панели управления*/
+.btn {
+    border-radius: 5px;
+    display: block;
+    padding: 10rem 15rem;
+    margin: 10rem;
+    font-size: 15rem;
+    transition: .5s;
+
+}
+
+/*стиль для кнопки авторизации*/
+.auth_btn {
+    background-color: #bdc4d9;
+    border: 1rem solid #3625dc;
+}
+
+.auth_btn:hover {
+    background-color: #323590;
+    color: #ffffff;
+}
+
+/*стили для пользовательских кнопок*/
+.user_btn {
+    background-color: #8bba8b;
+    border: 1rem solid #095a09;
+}
+
+.user_btn:hover {
+    background-color: #064906;
+    color: #fff;
+}
+
+/*стили для админских кнопок*/
+.admin_btn {
+    background-color: #e28282;
+    border: 1rem solid #d55353;
+}
+
+.admin_btn:hover {
+    background-color: #d22525;
+    color: #ffffff;
+}
+
+
+/* Поля формы */
+.form_field {
+    margin: 0 20rem;
+    position: relative;
+    border: 1px solid #3625dc;
+    border-radius: 20px;
+    padding: 20rem;
+    height: auto;
+    width: 500rem;
+    background-color: #fff2f2;
+    text-shadow: 1px 1px 10px black;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+
+/*крестик*/
+.form_field__close {
+    position: absolute;
+    top: 20rem;
+    right: 20rem;
+    width: 24rem;
+    height: 24rem;
+    outline: none;
+}
+
+.form_field__error {
+    color: red;
+}
+
+.form_field__items {
+    font-size: 18rem;
+}
+
+.form_field__items label {
+    margin-top: 10px;
+    display: block;
+}
+
+.form_field__items label:before {
+    content: "";
+    display: block;
+    height: 10px;
+}
+
+.form_field__items input,
+select {
+    height: 25px;
+    width: 100%;
+}
+
+.form_field__btn {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    border-radius: 5px;
+    height: auto;
+    width: auto;
+    text-align: center;
+    background-color: #deffe8;
+}
+
+.form_field__text {
+    color: darkslateblue;
+    margin-top: 10rem;
+    font-size: 10rem;
+}
+
+/*Стили для шаблона с редактированием линков*/
+.form_field__title {
+    font-size: 24rem;
+    margin-bottom: 60rem;
+    text-align: center;
+}
+
+.form_field__category {
+    font-size: 18rem;
+}
+
+.form_field__name {
+    font-size: 18rem;
+}
+
+.form_field__link {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.jcsb {
+    justify-content: space-between;
+}
+
+.jcfs {
+    justify-content: flex-start;
+}
+
+.rename_btn {
+    color: #10106d
+}
+
+.delete_btn {
+    color: #a3354b;
+}
+
+.font_size14 {
+    font-size: 14rem;
+}
+
+.font_size22 {
+    font-size: 22rem;
+}
+
+.admin_color {
+    color: #e71616;
+}
+
+.col_width33 {
+    width: 43%;
+}
+
+.form_field__category_footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20rem;
+}
+
+.form_field__auth_footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20rem;
+}
+
+.close {
+    cursor: pointer;
+}
+
+.close:before,
+.close:after {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 24px;
+    height: 2px;
+    background: #483d8b;
+}
+
+.close:before {
+    transform: rotate(45deg);
+}
+
+.close:after {
+    transform: rotate(-45deg);
+}
+
+/*Контейнер для линков*/
+.container {
+    width: 90%;
+    height: 60%;
+    margin: 0 auto;
+    overflow-y: auto;
+}
+
+.main_frame {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.cat_frame {
+    cursor: default;
+    flex-grow: 1;
+    background: #fff2f2;
+    border: 1px solid #3625dc;
+    border-radius: 10px;
+    position: relative;
+    margin: 1%;
+    min-height: 120px;
+    min-width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
+    z-index: 4;
+    transition: 0.5s;
+}
+
+.cat_frame:hover {
+    background-color: #d8d9ff;
+}
+
+.cat_title {
+    font-size: 18rem;
+    padding: 0 4rem;
+    position: absolute;
+    top: -10rem;
+    left: 2%;
+    background: rgb(244, 246, 248);
+    text-shadow: 1px 1px 10px black;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.link {
+    flex-basis: 10rem;
+    display: flex;
+    height: auto;
+    margin: 1%;
+    transition: 0.5s;
+}
+
+.link:hover {
+    transform: scale(1.1);
+}
+
+.link a {
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    font-size: 16rem;
+}
+
+.link a img {
+    width: 48rem;
+}
+
+.link_del {
+    display: inline;
+}
+
+.link_to_next {
+    color: #3625dc;
+}
+
+.link_to_next:hover {
+    text-decoration: underline;
+}
+
+.link__size {
+    width: 90px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/*Подвал*/
+.author {
+    position: fixed;
+    bottom: 5rem;
+    right: 2rem;
+    font-size: 16rem;
+}
+
+.version {
+    position: fixed;
+    bottom: 5rem;
+    left: 2rem;
+    cursor: pointer;
+    font-size: 16rem;
+}
+
+
+@media screen and (max-width: 960px) {
+    .form_field {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 0 auto;
+    }
+
+    .logo {
+        width: 100%;
+        margin: 1rem auto;
+        position: relative;
+        top: 0;
+        left: 0;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container {
+        width: 90%;
+        height: 75%;
+        margin: 1rem auto;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    html {
+        font-size: .9px;
+    }
+
+    .main-frame {
+        flex-direction: column;
+    }
+}
+
+@media only screen and (max-width: 640px) {
+    .container {
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .usermenu {
+        bottom: 30rem;
+    }
+
+    .usermenu_elem {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: end;
+    }
+
+
+    .cat_frame {
+        flex-grow: 1;
+        border-radius: 3px;
+        position: relative;
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .version {
+        display: none;
+    }
+
+    .author {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    html {
+        font-size: .8px;
+    }
+
+    .container {
+        height: 80%;
+    }
+
+    .main-frame {
+        margin: 0;
+    }
+
+    .usermenu {
+        bottom: 20rem;
+    }
+
+    .form_field {
+        position: relative;
+        margin: 50rem auto;
+        border: 1rem solid black;
+        border-radius: 3px;
+        padding: 10rem;
+        height: auto;
+        width: 100%;
+        background-color: #fff2f2;
+        text-shadow: 1px 1px 10px black;
+        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+    }
+
+}
+
+@media screen and (max-width: 380px) {
+    html {
+        font-size: .7px;
+    }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LinkToSite</title>
+</head>
+<body>
+<div class="screen">
+    <header class="header">
+        <div class='logo'>
+            <a href="{% url 'main_view' %}"><h1 class="logo__name">LinkToSite</h1></a>
+            <div class='logo__username'>
+                {% if user.is_authenticated %}
+                    {% if user.first_name or user.last_name %}
+                        {% if user.first_name %}<b class="{% if user.is_superuser %}admin_color{% endif %}">{{ user.first_name }}</b>{% endif %}
+                        {% if user.last_name %}<b class="{% if user.is_superuser %}admin_color{% endif %}">{{ user.last_name }}</b>{% endif %}
+                    {% else %}
+                        <b class="{% if user.is_superuser %}admin_color{% endif %}">{{ user.username }}</b>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+
+
+    </header>
+
+    <div class='container'>
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+
+    {% get_version as ver %}
+    <div class="version">
+        <p title="{{ ver.description }}">ver. {{ ver.version }} beta</p>
+    </div>
+
+    <details class="author">
+        <summary>
+            &copy; &#9773; Fadeev Artem
+        </summary>
+        <p>
+            Moscow Russia, {{ ver.year }}
+        </p>
+    </details>
+
+</div>
+
+
+</body>
+</html>

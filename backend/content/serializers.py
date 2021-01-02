@@ -4,12 +4,14 @@ from django.contrib.auth.models import User
 from .models import Category, Link, UnauthorizedUserLink, Version
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserProjectSerializer(serializers.ModelSerializer):
     """Пользователь"""
+    date_joined = serializers.DateTimeField(format='%d.%m.%Y')
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name']
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_superuser', 'date_joined']
+        # fields = '__all__'
 
 
 class LinkSetSerializer(serializers.ModelSerializer):
@@ -22,7 +24,7 @@ class LinkSetSerializer(serializers.ModelSerializer):
 
 class CategorySerializer(serializers.ModelSerializer):
     """Список всех категорий"""
-    owner = UserSerializer()
+    owner = UserProjectSerializer()
     link_set = serializers.ManyRelatedField(child_relation=LinkSetSerializer())  # уже ближе но нето
 
     class Meta:

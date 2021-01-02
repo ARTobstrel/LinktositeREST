@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from .models import Category, UnauthorizedUserLink, Version, Link
 from .permissions import IsOwner
-from .serializers import CategorySerializer, CreateCategorySerializer, UserSerializer, LinkSerializer, \
+from .serializers import CategorySerializer, CreateCategorySerializer, UserProjectSerializer, LinkSerializer, \
     CreateLinkSerializer, UnauthorizedUserLinkSerializer, VersionSerializer, CategoryAuthUserSerializer
 
 
@@ -12,33 +12,34 @@ from .serializers import CategorySerializer, CreateCategorySerializer, UserSeria
 class UserRetrieveView(generics.RetrieveAPIView):
     """Получение одного пользователя по id"""
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserProjectSerializer
+    permission_classes = (IsAuthenticated,)
 
 
 class UserCreateView(generics.CreateAPIView):
     """Создание пользователя"""
-    serializer_class = UserSerializer
+    serializer_class = UserProjectSerializer
 
 
 class UserUpdateView(generics.UpdateAPIView):
     """Редактирование пользователя"""
     queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsOwner,)
+    serializer_class = UserProjectSerializer
+    permission_classes = (IsOwner,) # переделать пермишн
 
 
 class UserDeleteView(generics.DestroyAPIView):
     """Удаление пользователя"""
     queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsAdminUser, IsOwner)
+    serializer_class = UserProjectSerializer
+    # permission_classes = (IsAdminUser,)
 
 
 class UserListView(generics.ListAPIView):
-    """Список всех пользователей"""
+    """Список всех пользователей. Admin only"""
     queryset = User.objects.all()
-    serializer_class = UserSerializer
-    permission_classes = (IsAdminUser,)
+    serializer_class = UserProjectSerializer
+    # permission_classes = (IsAdminUser,)
 
 
 # Действия с категориями
@@ -74,6 +75,7 @@ class CategoryListView(generics.ListAPIView):
     """Список всех категорий"""
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    # permission_classes = (IsAdminUser,)
 
 
 class CategoryAuthUserListView(generics.ListAPIView):
