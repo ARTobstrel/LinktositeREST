@@ -1,14 +1,18 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.signals import pre_save
 from pytils.translit import slugify
+
+
+class User(AbstractUser):
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'is_superuser']
 
 
 class Category(models.Model):
     """Модель категорий. Название категорий. Это первое, что создает пользователь."""
     name = models.CharField(max_length=25)
     slug = models.SlugField(blank=True)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, related_name='owner', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -38,7 +42,7 @@ def image_folder(instance, filename):
 
 class Link(models.Model):
     """Модель ссыллок. Каждая ссылка имеет свою категорию"""
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, related_name='category', on_delete=models.CASCADE)
     title = models.CharField('Name', max_length=25)
     slug = models.SlugField(blank=True)
     link = models.CharField(max_length=100)

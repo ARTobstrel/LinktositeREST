@@ -1,8 +1,13 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.authtoken.views import obtain_auth_token
 
 from . import views
 
 urlpatterns = [
+    # Auth
+    path('auth/', include('djoser.urls')),
+    path('auth/token', obtain_auth_token, name='token'),
+
     # User
     path('user/<int:pk>/', views.UserRetrieveView.as_view()),
     path('user/create/', views.UserCreateView.as_view()),

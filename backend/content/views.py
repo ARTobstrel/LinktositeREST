@@ -1,14 +1,23 @@
-from django.contrib.auth.models import User
 from rest_framework import generics
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from django.contrib.auth import get_user_model
 
 from .models import Category, UnauthorizedUserLink, Version, Link
 from .permissions import IsOwner
 from .serializers import CategorySerializer, CreateCategorySerializer, UserProjectSerializer, LinkSerializer, \
     CreateLinkSerializer, UnauthorizedUserLinkSerializer, VersionSerializer, CategoryAuthUserSerializer
 
+User = get_user_model()
+
 
 # Действия с пользователем
+class UserLogout(APIView):
+    def get(self, request, format=None):
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
 class UserRetrieveView(generics.RetrieveAPIView):
     """Получение одного пользователя по id"""
     queryset = User.objects.all()
@@ -25,7 +34,7 @@ class UserUpdateView(generics.UpdateAPIView):
     """Редактирование пользователя"""
     queryset = User.objects.all()
     serializer_class = UserProjectSerializer
-    permission_classes = (IsOwner,) # переделать пермишн
+    permission_classes = (IsOwner,)  # переделать пермишн
 
 
 class UserDeleteView(generics.DestroyAPIView):

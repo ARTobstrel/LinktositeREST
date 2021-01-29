@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="version">
-      <p v-bind:title="version.description">ver. {{ version.version }} beta</p>
+      <p v-bind:title="get_version.description">ver. {{ get_version.version }} beta</p>
     </div>
 
     <details class="author">
@@ -9,26 +9,22 @@
         &copy; &#9773; Fadeev Artem
       </summary>
       <p>
-        Moscow Russia, {{ version.year }}
+        Moscow Russia, {{ get_version.year }}
       </p>
     </details>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
-  data(){
-    return {
-      version: [],
+  computed: {
+    get_version() {
+      return this.$store.getters.get_version
     }
   },
-  mounted() {
-    axios.get('http://127.0.0.1:8000/api/v1/version/last/')
-        .then((response) => {
-          this.version = response.data[0];
-        })
+  async mounted() {
+    this.$store.dispatch('get_version_from_api')
   }
+
 }
 </script>

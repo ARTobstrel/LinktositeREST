@@ -224,6 +224,14 @@ select {
     width: 100%;
 }
 
+.helper-text.invalid {
+    color: #f44336
+}
+
+.invalid {
+    border-color: red;
+}
+
 .jcsb {
     justify-content: space-between;
 }

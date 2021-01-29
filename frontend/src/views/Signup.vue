@@ -2,7 +2,7 @@
 
   <div class="form_field">
     <BackItem/>
-    <div class="form_field__title">Авторизация</div>
+    <div class="form_field__title">Новый пользователь</div>
     <form class="form_field__items" v-on:submit.prevent="submitHandler">
       <label for="username">Имя пользователя</label>
       <input
@@ -33,9 +33,22 @@
           v-else-if="$v.password.$dirty && !$v.password.minLength"
       >Короткий пароль
       </small>
-      <button type="submit" class="form_field__btn">Войти</button>
+
+      <label for="password2">Пароль еще раз</label>
+      <input
+          id="password2"
+          type="password"
+          v-model.trim="password2"
+          v-bind:class="{invalid: this.password !== this.password2}"
+      >
+      <small
+          class="helper-text invalid"
+          v-if="this.password !== this.password2"
+      >Пароли должны совпадать
+      </small>
+      <button type="submit" class="form_field__btn">Регистрация</button>
       <div class="form_field__auth_footer">
-        <router-link to='/signup' class='username__log'>Регистрация</router-link>
+        <router-link to=/login class='username__log'>Войти</router-link>
         <a href='#' class='username__log'>Войти через Google</a>
       </div>
     </form>
@@ -52,10 +65,11 @@ export default {
   data: () => ({
     username: '',
     password: '',
+    password2: ''
   }),
   validations: {
     username: {required},
-    password: {required, minLength: minLength(6)}
+    password: {required, minLength: minLength(6)},
   },
   components: {BackItem},
   methods: {
@@ -68,16 +82,12 @@ export default {
         username: this.username,
         password: this.password
       }
-
       try {
-        await this.$store.dispatch('login', formData)
-            .then(this.$store.dispatch('auth_user', this.$store.getters.get_user_token.token))
+        await this.$store.dispatch('register', formData)
             .then(this.$router.push('/'))
-
       } catch (e) {
         console.log(e)
       }
-
     }
   }
 }

@@ -22,6 +22,18 @@ export default new VueRouter({
         {
             path: '/create_category',
             component: () => import('@/views/CreateCategory')
+        },
+        {
+            path: '/create_link',
+            component: () => import('@/views/CreateLink')
+        },
+        {
+            path: '/logout',
+            component: () => import('@/views/Logout')
+        },
+        {
+            path: '/signup',
+            component: () => import('@/views/Signup')
         }
     ]
 })

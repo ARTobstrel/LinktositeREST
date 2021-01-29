@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="form_field__title">List users</div>
+    <div class="form_field__title">Список пользователей</div>
     <UserItem
         v-for="user in users" :key="user.id"
         v-bind:user="user"

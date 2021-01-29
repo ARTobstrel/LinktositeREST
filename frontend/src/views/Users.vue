@@ -40,7 +40,7 @@ export default {
     },
     delete_user(id) {
       axios.delete(`${this.urls.del_user}${id}`);
-      this.get_users();
+      // понять как обновить компонент после удаления пользователя
     }
   },
   async mounted() {
