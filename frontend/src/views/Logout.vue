@@ -6,3 +6,12 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'logout',
+  async created() {
+    await this.$store.dispatch('logout')
+  }
+}
+</script>

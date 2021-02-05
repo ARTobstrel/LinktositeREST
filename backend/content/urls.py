@@ -13,6 +13,7 @@ urlpatterns = [
     path('user/create/', views.UserCreateView.as_view()),
     path('user/update/<int:pk>/', views.UserUpdateView.as_view()),
     path('user/delete/<int:pk>/', views.UserDeleteView.as_view()),
+    path('user/logout/', views.UserLogout.as_view()),
     path('user/all/', views.UserListView.as_view()),
 
     # Category

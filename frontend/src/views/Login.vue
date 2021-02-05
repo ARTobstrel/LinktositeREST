@@ -71,9 +71,8 @@ export default {
 
       try {
         await this.$store.dispatch('login', formData)
-            .then(this.$store.dispatch('auth_user', this.$store.getters.get_user_token.token))
-            .then(this.$router.push('/'))
-
+        await this.$store.dispatch('auth_user')
+        await this.$router.push('/')
       } catch (e) {
         console.log(e)
       }

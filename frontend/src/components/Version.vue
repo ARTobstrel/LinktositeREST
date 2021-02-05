@@ -23,7 +23,7 @@ export default {
     }
   },
   async mounted() {
-    this.$store.dispatch('get_version_from_api')
+    this.$store.dispatch('fetch_version_from_api')
   }
 
 }

@@ -84,7 +84,9 @@ export default {
       }
       try {
         await this.$store.dispatch('register', formData)
-            .then(this.$router.push('/'))
+        await this.$store.dispatch('login', formData)
+        this.$store.dispatch('auth_user')
+        this.$router.push('/')
       } catch (e) {
         console.log(e)
       }

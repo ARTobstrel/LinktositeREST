@@ -4,7 +4,10 @@
       <a href="/"><h1 class="logo__name">LinkToSite</h1></a>
       <span>{{ date | date('datetime') }}</span>
       <div class='logo__username'>
-        <b class="admin_color">{{ get_user.username }}</b>
+        <b v-bind:class="{admin_color: user.is_superuser}">
+          <b v-if="user.first_name || user.last_name">{{ user.first_name }} {{ user.last_name }}</b>
+          <b v-else>{{ user.username }}</b>
+        </b>
       </div>
     </div>
   </header>
@@ -17,7 +20,7 @@ export default {
     interval: null
   }),
   computed: {
-    get_user(){
+    user() {
       return this.$store.getters.get_user
     }
   },

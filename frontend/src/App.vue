@@ -36,6 +36,11 @@ export default {
       }
     }
   },
+  created() {
+    if (localStorage.getItem('auth_token')) {
+      this.$store.dispatch('auth_user')
+    }
+  },
   methods: {
     get_all_categories() {
       axios.get(this.urls.all_categories).then((response) => {

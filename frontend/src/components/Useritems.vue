@@ -4,7 +4,6 @@
     <UserItem
         v-for="user in users" :key="user.id"
         v-bind:user="user"
-        v-on:delete_user="delete_user"
     />
     <div class="form_field__category_footer"></div>
   </div>
@@ -18,10 +17,5 @@ export default {
   components: {
     UserItem
   },
-  methods: {
-    delete_user(id) {
-      this.$emit('delete_user', id);
-    }
-  }
 }
 </script>

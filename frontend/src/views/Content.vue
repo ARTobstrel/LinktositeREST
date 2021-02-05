@@ -2,15 +2,8 @@
 
   <div>
     <div class='main_frame'>
-      <div class="cat_frame">
-        <div class="cat_title">Links</div>
-        <div v-for="link in links" class="link">
-          <a v-bind:href="link.link" target="_blank">
-            <img v-bind:src="link.image" alt="">
-            <p>{{ link.title }}</p>
-          </a>
-        </div>
-      </div>
+      <AuthLinks v-if="$store.getters.get_is_auth"/>
+      <UnAuthLinks v-else />
     </div>
 
     <Usermenu/>
@@ -20,23 +13,16 @@
 </template>
 
 <script>
-import Usermenu from "@/components/Usermenu";
-import axios from "axios";
+import Usermenu from '@/components/Usermenu'
+import AuthLinks from '@/components/AuthLinks'
+import UnAuthLinks from '@/components/UnAuthLinks'
 
 export default {
-  data() {
-    return {
-      links: [],
-    }
-  },
+  name: 'content',
   components: {
     Usermenu,
+    UnAuthLinks,
+    AuthLinks
   },
-  mounted() {
-    axios.get('http://127.0.0.1:8000/api/v1/links/')
-        .then((response) => {
-          this.links = response.data;
-        })
-  }
 }
 </script>

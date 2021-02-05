@@ -3,7 +3,7 @@ import axios from "axios";
 export default {
     state: {
         user: [],
-        user_token: []
+        is_auth: false
     },
     actions: {
         async login({dispatch, commit}, {username, password}) {
@@ -11,37 +11,32 @@ export default {
                 return await axios({
                     method: 'post',
                     url: 'http://127.0.0.1:8000/api/v1/auth/token',
-                    headers: {
-                        // 'accept': 'application/json',
-                        // 'Content-Type': 'application/json'
-                    },
                     data: {
                         'username': username,
-                        'password': password,
-                        'is_superuser': false
+                        'password': password
                     }
                 })
                     .then((response) => {
-                        commit('set_user_token_to_state', response.data)
+                        localStorage.setItem('auth_token', response.data.token);
                     })
             } catch (error) {
-                console.log(error)
+                throw error
             }
         },
-        async auth_user({dispatch, commit}, token) {
+        async auth_user({dispatch, commit}) {
             try {
                 return await axios({
                     method: 'get',
                     url: 'http://127.0.0.1:8000/api/v1/auth/users/me/',
                     headers: {
-                        'Authorization': `Token ${token}`
+                        'Authorization': `Token ${localStorage.getItem('auth_token')}`
                     }
                 })
                     .then((response) => {
                         commit('set_user_to_state', response.data)
                     })
-            } catch (e) {
-                console.log(e)
+            } catch (error) {
+                throw error
             }
         },
         async register({dispatch, commit}, {username, password}) {
@@ -55,28 +50,44 @@ export default {
                     },
                     data: {
                         'username': username,
-                        'password': password
+                        'password': password,
+                        'is_superuser': false
                     }
                 })
-                    .then((response) => {
-                        commit('set_user_to_state', response.data)
-                    })
-            } catch (e) {
-                console.log(e)
+            } catch (error) {
+                throw error
+            }
+        },
+        async logout({dispatch, commit}) {
+            try {
+                return await axios({
+                    method: 'get',
+                    url: 'http://127.0.0.1:8000/api/v1/user/logout/',
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('auth_token')}`
+                    }
+                }).then((response) => {
+                    commit('set_user_to_state', [])
+                    commit('set_user_logout')
+                    localStorage.removeItem('auth_token')
+                })
+            } catch (error) {
+                throw error
             }
         }
     },
     mutations: {
-        set_user_token_to_state: (state, user_token) => {
-            state.user_token = user_token
-        },
         set_user_to_state: (state, user) => {
             state.user = user
+            state.is_auth = true
+        },
+        set_user_logout: (state) => {
+            state.is_auth = false
         }
     },
     getters: {
-        get_user_token: state => state.user_token,
-        get_user: state => state.user
+        get_user: state => state.user,
+        get_is_auth: state => state.is_auth
 
     }
 }
