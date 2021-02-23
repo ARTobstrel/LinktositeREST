@@ -42,7 +42,7 @@ def image_folder(instance, filename):
 
 class Link(models.Model):
     """Модель ссыллок. Каждая ссылка имеет свою категорию"""
-    category = models.ForeignKey(Category, related_name='category', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField('Name', max_length=25)
     slug = models.SlugField(blank=True)
     link = models.CharField(max_length=100)

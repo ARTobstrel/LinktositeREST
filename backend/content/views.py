@@ -57,7 +57,7 @@ class CategoryRetrieveView(generics.RetrieveAPIView):
     """Вывод категории по id"""
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = (IsAuthenticated, IsOwner)
+    # permission_classes = (IsAuthenticated, IsOwner)
 
 
 class CategoryCreateView(generics.CreateAPIView):
@@ -96,7 +96,7 @@ class CategoryAuthUserListView(generics.ListAPIView):
         """вывод только тех категорий которые принадлежат авторизованному пользователю"""
         return Category.objects.filter(owner=self.request.user)
 
-    permission_classes = (IsAuthenticated,)
+    # permission_classes = (IsAuthenticated,)
 
 
 # Действия с линками

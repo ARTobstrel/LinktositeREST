@@ -5,6 +5,19 @@ export default {
         user: [],
         is_auth: false
     },
+    mutations: {
+        set_user_to_state: (state, user) => {
+            state.user = user
+            state.is_auth = true
+        },
+        set_user_logout: (state) => {
+            state.is_auth = false
+        }
+    },
+    getters: {
+        get_user: state => state.user,
+        get_is_auth: state => state.is_auth
+    },
     actions: {
         async login({dispatch, commit}, {username, password}) {
             try {
@@ -75,19 +88,5 @@ export default {
                 throw error
             }
         }
-    },
-    mutations: {
-        set_user_to_state: (state, user) => {
-            state.user = user
-            state.is_auth = true
-        },
-        set_user_logout: (state) => {
-            state.is_auth = false
-        }
-    },
-    getters: {
-        get_user: state => state.user,
-        get_is_auth: state => state.is_auth
-
     }
 }

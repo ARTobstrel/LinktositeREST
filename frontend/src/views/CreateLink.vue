@@ -5,12 +5,14 @@
     <form class="form_field__items" v-on:submit.prevent="submitHandler" enctype="multipart/form-data">
       <label for="category">Категория</label>
       <select
-
           id="category"
           v-model="category"
           v-bind:class="{invalid: $v.category.$dirty && !$v.category.required}"
       >
-        <option v-for="category in categories" :key="category.id">{{ category.name }}</option>
+        <option v-for="category in categories"
+                :key="category.id"
+        >{{ category.name }}
+        </option>
       </select>
       <small
           class="helper-text invalid"
@@ -20,33 +22,33 @@
       <router-link to='/create_category' class='form_field__add_category'
                    title='New category'>&#10010;
       </router-link>
-      <label for="link_title">Название ссылки</label>
+      <label for="title">Название ссылки</label>
       <input
-          id="link_title"
+          id="title"
           type="text"
-          v-model.trim="link_title"
-          v-bind:class="{invalid: $v.link_title.$dirty && !$v.link_title.required}"
+          v-model.trim="title"
+          v-bind:class="{invalid: $v.title.$dirty && !$v.title.required}"
       >
       <small
           class="helper-text invalid"
-          v-if="$v.link_title.$dirty && !$v.link_title.required"
+          v-if="$v.title.$dirty && !$v.title.required"
       >Укажите название ссылки
       </small>
-      <label for="link_url">URL ссылки</label>
+      <label for="link">URL ссылки</label>
       <input
-          id="link_url"
+          id="link"
           type="text"
-          v-model.trim="link_url"
-          v-bind:class="{invalid: $v.link_url.$dirty && !$v.link_url.required}"
+          v-model.trim="link"
+          v-bind:class="{invalid: $v.link.$dirty && !$v.link.required}"
       >
       <small
           class="helper-text invalid"
-          v-if="$v.link_url.$dirty && !$v.link_url.required"
+          v-if="$v.link.$dirty && !$v.link.required"
       >Укажите корректный URL
       </small>
-      <label for="link_image">Иконка</label>
+      <label for="image">Иконка</label>
       <input
-          id="link_image"
+          id="image"
           type="file"
           ref="file"
           v-on:change="fileUploadHandler"
@@ -60,56 +62,75 @@
 <script>
 import {required} from "vuelidate/lib/validators"
 import BackItem from "@/components/BackItem";
-import axios from "axios";
 
 export default {
   name: 'create_link',
   data: () => ({
-    categories: '',
     category: '',
-    link_title: '',
-    link_url: '',
-    link_image: ''
+    title: '',
+    link: '',
+    image: ''
   }),
+  computed: {
+    categories() {
+      return this.$store.getters.get_user_categories
+    },
+
+  },
   validations: {
     category: {required},
-    link_title: {required},
-    link_url: {required},
+    title: {required},
+    link: {required},
   },
   components: {
     BackItem
   },
   methods: {
-    submitHandler() {
+    fileUploadHandler() {
+      this.image = this.$refs.file.files[0]
+    },
+
+    get_id_from_name(name) {
+      for (category of this.categories) {
+        if (category.name === name) {
+          return category.id
+        }
+      }
+      return 0
+    },
+
+    async submitHandler() {
       if (this.$v.$invalid) {
         this.$v.$touch()
         return
       }
-      const formData = {
-        category: this.category,
-        link_title: this.link_title,
-        link_url: this.link_url,
-        link_image: this.link_image
+      let formData = new FormData()
+
+      formData.append('category', this.get_id_from_name(this.category))
+      formData.append('title', this.title)
+      formData.append('link', this.link)
+      if (this.image) {
+        formData.append('image', this.image)
       }
+
       console.log(formData)
+
+      try {
+        await this.$store.dispatch('create_link', formData)
+      } catch (error) {
+        console.log(error)
+      }
       this.$router.push('/')
     },
 
-    get_categories() {
-      axios.get('http://127.0.0.1:8000/api/v1/category/all/')
-          .then(response => {
-            this.categories = response.data;
-            console.log(this.categories)
-          })
-    },
-
-    fileUploadHandler(){
-      this.link_image = this.$refs.file.files[0]
-    }
   },
 
   async mounted() {
-    await this.get_categories()
+    try {
+      await this.$store.dispatch('fetch_user_links_from_api')
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 </script>

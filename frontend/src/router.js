@@ -34,6 +34,10 @@ export default new VueRouter({
         {
             path: '/signup',
             component: () => import('@/views/Signup')
+        },
+        {
+            path: '/editcategory',
+            component: () => import('@/views/EditCategory')
         }
     ]
 })

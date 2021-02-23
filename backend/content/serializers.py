@@ -21,26 +21,26 @@ class LinkSetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Link
-        fields = ['title', 'link', 'image']
+        fields = ['id', 'title', 'link', 'image']
 
 
 class CategorySerializer(serializers.ModelSerializer):
     """Список всех категорий"""
     owner = UserProjectSerializer()
-    link_set = serializers.ManyRelatedField(child_relation=LinkSetSerializer())  # уже ближе но нето
+    links = serializers.ManyRelatedField(child_relation=LinkSetSerializer(), source='link_set')
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'owner', 'link_set']
+        fields = ['id', 'name', 'owner', 'links']
 
 
 class CategoryAuthUserSerializer(serializers.ModelSerializer):
     """Категории авторизованного пользователя"""
-    link_set = serializers.ManyRelatedField(child_relation=LinkSetSerializer())
+    links = serializers.ManyRelatedField(child_relation=LinkSetSerializer(), source='link_set')
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'link_set']
+        fields = ['id', 'name', 'links']
 
 
 class CreateCategorySerializer(serializers.ModelSerializer):

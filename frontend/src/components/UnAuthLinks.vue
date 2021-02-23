@@ -1,11 +1,13 @@
 <template>
-  <div class="cat_frame">
-    <div class="cat_title">Links</div>
-    <div v-for="link in links" class="link">
-      <a v-bind:href="link.link" target="_blank">
-        <img v-bind:src="link.image" alt="">
-        <p>{{ link.title }}</p>
-      </a>
+  <div class="main-frame">
+    <div class="cat_frame">
+      <div class="cat_title">Links</div>
+      <div v-for="link in links" class="link">
+        <a v-bind:href="link.link" target="_blank">
+          <img v-bind:src="link.image" alt="">
+          <p>{{ link.title }}</p>
+        </a>
+      </div>
     </div>
   </div>
 </template>

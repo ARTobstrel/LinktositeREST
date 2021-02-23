@@ -307,6 +307,10 @@ select {
     overflow-y: auto;
 }
 
+.container_auth {
+    overflow-y: auto;
+}
+
 .main_frame {
     display: flex;
     flex-wrap: wrap;
@@ -323,6 +327,7 @@ select {
     margin: 1%;
     min-height: 120px;
     min-width: 250px;
+    /*max-width: max-content;*/
     display: flex;
     align-items: center;
     justify-content: center;

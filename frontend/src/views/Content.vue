@@ -1,10 +1,8 @@
 <template>
 
   <div>
-    <div class='main_frame'>
-      <AuthLinks v-if="$store.getters.get_is_auth"/>
-      <UnAuthLinks v-else />
-    </div>
+    <AuthLinks v-if="$store.getters.get_is_auth"/>
+    <UnAuthLinks v-else/>
 
     <Usermenu/>
   </div>

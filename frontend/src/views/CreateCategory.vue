@@ -26,9 +26,11 @@ import BackItem from "@/components/BackItem";
 
 export default {
   name: 'create_category',
-  data: () => ({
-    category_title: ''
-  }),
+  data() {
+    return {
+      category_title: ''
+    }
+  },
   validations: {
     category_title: {required}
   },
@@ -36,7 +38,7 @@ export default {
     BackItem
   },
   methods: {
-    submitHandler() {
+    async submitHandler() {
       if (this.$v.$invalid) {
         this.$v.$touch()
         return
@@ -44,7 +46,11 @@ export default {
       const formData = {
         category_title: this.category_title
       }
-      console.log(formData)
+      try {
+        await this.$store.dispatch('create_category', formData)
+      } catch (error) {
+        console.log(error)
+      }
       this.$router.push('/')
     }
   }
