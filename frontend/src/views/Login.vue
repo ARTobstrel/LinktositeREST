@@ -14,7 +14,7 @@
       <small
           class="helper-text invalid"
           v-if="$v.username.$dirty && !$v.username.required"
-      >Необходимо ввести имя
+      >Input username.
       </small>
       <label for="password">Пароль</label>
       <input
@@ -25,13 +25,18 @@
       >
       <small
           class="helper-text invalid"
+          v-if="error_message.non_field_errors"
+      >Username or password is incorrect.
+      </small>
+      <small
+          class="helper-text invalid"
           v-if="$v.password.$dirty && !$v.password.required"
-      >Введите пароль
+      >Input password.
       </small>
       <small
           class="helper-text invalid"
           v-else-if="$v.password.$dirty && !$v.password.minLength"
-      >Короткий пароль
+      >This password is too short.
       </small>
       <button type="submit" class="form_field__btn">Войти</button>
       <div class="form_field__auth_footer">
@@ -49,15 +54,27 @@ import BackItem from "@/components/BackItem";
 
 export default {
   name: 'login',
-  data: () => ({
-    username: '',
-    password: '',
-  }),
+
+  data() {
+    return {
+      username: '',
+      password: '',
+    }
+  },
+
+  computed: {
+    error_message() {
+      return this.$store.getters.get_user_message
+    }
+  },
+
   validations: {
     username: {required},
     password: {required, minLength: minLength(6)}
   },
+
   components: {BackItem},
+
   methods: {
     async submitHandler() {
       if (this.$v.$invalid) {
@@ -72,6 +89,7 @@ export default {
       try {
         await this.$store.dispatch('login', formData)
         await this.$store.dispatch('auth_user')
+        this.$store.commit('set_user_message', []) //удаляем сообщения об ошибках
         await this.$router.push('/')
       } catch (e) {
         console.log(e)

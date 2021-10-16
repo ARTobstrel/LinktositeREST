@@ -1,4 +1,5 @@
 <template>
+
   <div class="form_field">
     <BackItem/>
     <Useritems
@@ -7,21 +8,21 @@
   </div>
 </template>
 
-
 <script>
 import BackItem from "@/components/BackItem";
 import Useritems from "@/components/Useritems";
 import UserItem from "@/components/UserItem";
 
-
 export default {
   name: 'users',
+
   computed: {
     users() {
       return this.$store.getters.get_users
     }
   },
-  async mounted() {
+
+  async created() {
     await this.$store.dispatch('fetch_users')
   },
 
@@ -32,5 +33,4 @@ export default {
   },
 
 }
-
 </script>

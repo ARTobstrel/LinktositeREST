@@ -7,7 +7,6 @@
     <Usermenu/>
   </div>
 
-
 </template>
 
 <script>
@@ -16,7 +15,6 @@ import AuthLinks from '@/components/AuthLinks'
 import UnAuthLinks from '@/components/UnAuthLinks'
 
 export default {
-  name: 'content',
   components: {
     Usermenu,
     UnAuthLinks,

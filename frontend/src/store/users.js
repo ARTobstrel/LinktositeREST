@@ -1,5 +1,6 @@
 import axios from "axios";
 import {BASE_URL} from "@/config";
+import VueRouter from "../router"
 
 export default {
     state: {
@@ -12,7 +13,6 @@ export default {
     },
     getters: {
         get_users: state => state.users
-
     },
     actions: {
         async fetch_users({dispatch, commit, state}) {
@@ -20,12 +20,17 @@ export default {
                 return await axios({
                     method: 'get',
                     url: `${BASE_URL}api/v1/user/all/`,
+                    headers: {
+                        'Authorization': `Token ${localStorage.getItem('auth_token')}`
+                    }
                 })
                     .then((response) => {
+                        console.log(response.status)
                         commit('set_users_to_state', response.data)
                     })
             } catch (error) {
-                throw error
+                console.error(error)
+                VueRouter.push({name: 'main'})
             }
         },
         async delete_user({dispatch, commit, state}, user_id) {
@@ -41,6 +46,5 @@ export default {
                 throw error
             }
         }
-
     }
 }

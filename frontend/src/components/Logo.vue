@@ -15,27 +15,28 @@
 
 <script>
 export default {
-  data: () => ({
-    date: new Date(),
-    interval: null
-  }),
+  data() {
+    return {
+      date: new Date(),
+      interval: null
+    }
+  },
+
   computed: {
     user() {
       return this.$store.getters.get_user
     }
   },
+
   mounted() {
     this.interval = setInterval(() => {
       this.date = new Date()
     }, 1000)
   },
+
   beforeDestroy() {
     // если компонент уничтожается, то освобождается память
     clearInterval(this.interval)
   }
 }
 </script>
-
-<style>
-
-</style>

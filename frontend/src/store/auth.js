@@ -1,8 +1,10 @@
 import axios from "axios";
+import {BASE_URL} from "../config";
 
 export default {
     state: {
         user: [],
+        user_message: [],
         is_auth: false
     },
     mutations: {
@@ -12,18 +14,22 @@ export default {
         },
         set_user_logout: (state) => {
             state.is_auth = false
+        },
+        set_user_message: (state, message) => {
+            state.user_message = message
         }
     },
     getters: {
         get_user: state => state.user,
-        get_is_auth: state => state.is_auth
+        get_is_auth: state => state.is_auth,
+        get_user_message: state => state.user_message
     },
     actions: {
         async login({dispatch, commit}, {username, password}) {
             try {
                 return await axios({
                     method: 'post',
-                    url: 'http://127.0.0.1:8000/api/v1/auth/token',
+                    url: `${BASE_URL}api/v1/auth/token`,
                     data: {
                         'username': username,
                         'password': password
@@ -33,6 +39,7 @@ export default {
                         localStorage.setItem('auth_token', response.data.token);
                     })
             } catch (error) {
+                commit('set_user_message', error.response.data)
                 throw error
             }
         },
@@ -40,7 +47,7 @@ export default {
             try {
                 return await axios({
                     method: 'get',
-                    url: 'http://127.0.0.1:8000/api/v1/auth/users/me/',
+                    url: `${BASE_URL}api/v1/auth/users/me/`,
                     headers: {
                         'Authorization': `Token ${localStorage.getItem('auth_token')}`
                     }
@@ -54,9 +61,9 @@ export default {
         },
         async register({dispatch, commit}, {username, password}) {
             try {
-                return await axios({
+                await axios({
                     method: 'post',
-                    url: 'http://127.0.0.1:8000/api/v1/auth/users/',
+                    url: `${BASE_URL}api/v1/auth/users/`,
                     headers: {
                         'accept': 'application/json',
                         'Content-Type': 'application/json'
@@ -68,6 +75,7 @@ export default {
                     }
                 })
             } catch (error) {
+                commit('set_user_message', error.response.data)
                 throw error
             }
         },
@@ -75,7 +83,7 @@ export default {
             try {
                 return await axios({
                     method: 'get',
-                    url: 'http://127.0.0.1:8000/api/v1/user/logout/',
+                    url: `${BASE_URL}api/v1/user/logout/`,
                     headers: {
                         'Authorization': `Token ${localStorage.getItem('auth_token')}`
                     }

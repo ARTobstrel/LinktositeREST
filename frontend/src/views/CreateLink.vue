@@ -1,9 +1,9 @@
 <template>
   <div class="form_field">
     <BackItem/>
-    <div class="form_field__title">Создание новой ссылки</div>
+    <div class="form_field__title">{{ cl.title[lan] }}</div>
     <form class="form_field__items" v-on:submit.prevent="submitHandler" enctype="multipart/form-data">
-      <label for="category">Категория</label>
+      <label for="category">{{ cl.category[lan] }}</label>
       <select
           id="category"
           v-model="category"
@@ -17,12 +17,12 @@
       <small
           class="helper-text invalid"
           v-if="$v.category.$dirty && !$v.category.required"
-      >Выберите категорию
+      >{{ cl.helper_text_category[lan] }}
       </small>
-      <router-link to='/create_category' class='form_field__add_category'
+      <router-link :to="{name: 'createcategory', params: {back_page: '/createlink'}}" class='form_field__add_category'
                    title='New category'>&#10010;
       </router-link>
-      <label for="title">Название ссылки</label>
+      <label for="title">{{ cl.link[lan] }}</label>
       <input
           id="title"
           type="text"
@@ -32,9 +32,9 @@
       <small
           class="helper-text invalid"
           v-if="$v.title.$dirty && !$v.title.required"
-      >Укажите название ссылки
+      >{{ cl.helper_text_link[lan] }}
       </small>
-      <label for="link">URL ссылки</label>
+      <label for="link">{{ cl.url[lan] }}</label>
       <input
           id="link"
           type="text"
@@ -44,16 +44,16 @@
       <small
           class="helper-text invalid"
           v-if="$v.link.$dirty && !$v.link.required"
-      >Укажите корректный URL
+      >{{ cl.helper_text_url[lan] }}
       </small>
-      <label for="image">Иконка</label>
+      <label for="image">{{ cl.icon[lan] }}</label>
       <input
           id="image"
           type="file"
           ref="file"
           v-on:change="fileUploadHandler"
       >
-      <button type="submit" class="form_field__btn">Создать</button>
+      <button type="submit" class="form_field__btn">{{ cl.btn_create[lan] }}</button>
     </form>
   </div>
 
@@ -64,27 +64,40 @@ import {required} from "vuelidate/lib/validators"
 import BackItem from "@/components/BackItem";
 
 export default {
-  name: 'create_link',
-  data: () => ({
-    category: '',
-    title: '',
-    link: '',
-    image: ''
-  }),
+  name: 'createlink',
+
+  data() {
+    return {
+      category: '',
+      title: '',
+      link: '',
+      image: '',
+    }
+  },
+
   computed: {
     categories() {
       return this.$store.getters.get_user_categories
     },
+    cl() {
+      return this.$store.getters.get_lang_create_link
+    },
+    lan() {
+      return this.$store.getters.get_lan
+    }
 
   },
+
   validations: {
     category: {required},
     title: {required},
     link: {required},
   },
+
   components: {
     BackItem
   },
+
   methods: {
     fileUploadHandler() {
       this.image = this.$refs.file.files[0]
@@ -112,8 +125,6 @@ export default {
       if (this.image) {
         formData.append('image', this.image)
       }
-
-      console.log(formData)
 
       try {
         await this.$store.dispatch('create_link', formData)

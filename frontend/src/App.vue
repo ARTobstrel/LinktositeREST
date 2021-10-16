@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 import Logo from "@/components/Logo";
 import Version from "@/components/Version";
 
@@ -27,25 +25,10 @@ export default {
     Logo,
     Version
   },
-  data() {
-    return {
-      user: [],
-      categories: [],
-      urls: {
-        'all_categories': 'http://127.0.0.1:8000/api/v1/category/all/'
-      }
-    }
-  },
+
   created() {
     if (localStorage.getItem('auth_token')) {
       this.$store.dispatch('auth_user')
-    }
-  },
-  methods: {
-    get_all_categories() {
-      axios.get(this.urls.all_categories).then((response) => {
-        this.categories = response.data;
-      })
     }
   },
 }

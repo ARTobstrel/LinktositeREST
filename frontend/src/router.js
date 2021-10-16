@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Content from '@/views/Content'
 
 Vue.use(VueRouter)
 
@@ -9,7 +8,8 @@ export default new VueRouter({
     routes: [
         {
             path: '/',
-            component: Content
+            name: 'main',
+            component: () => import('@/views/Content')
         },
         {
             path: '/login',
@@ -17,14 +17,19 @@ export default new VueRouter({
         },
         {
             path: '/users',
-            component: () => import('@/views/Users')
+            component: () => import('@/views/Users'),
+
         },
         {
-            path: '/create_category',
+            path: '/createcategory',
+            name: 'createcategory',
+            props: true,
             component: () => import('@/views/CreateCategory')
         },
         {
-            path: '/create_link',
+            path: '/createlink',
+            name: 'createlink',
+            props: true,
             component: () => import('@/views/CreateLink')
         },
         {
@@ -37,7 +42,26 @@ export default new VueRouter({
         },
         {
             path: '/editcategory',
+            name: 'editcategory',
             component: () => import('@/views/EditCategory')
+        },
+        {
+            path: '/editlink',
+            name: 'editlink',
+            props: true,
+            component: () => import('@/views/EditLink')
+        },
+        {
+            path: '/updatecategory',
+            name: 'updatecategory',
+            props: true,
+            component: () => import('@/views/UpdateCategory')
+        },
+        {
+            path: '/createcategorylink',
+            name: 'createcategorylink',
+            props: true,
+            component: () => import('@/views/CreateCategoryLink')
         }
     ]
 })

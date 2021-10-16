@@ -6,6 +6,7 @@ import users from "@/store/users"
 import links from "@/store/links"
 import category from "@/store/category"
 import {BASE_URL} from "@/config"
+import lang from "@/store/lang";
 
 
 Vue.use(Vuex)
@@ -13,17 +14,26 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         version: [],
+        lan: 'en'
     },
     // Мутейшины меняют state
     mutations: {
         set_version_to_state: (state, version) => {
             state.version = version
+        },
+        set_lan_to_state: (state, lan) => {
+            if (lan == 'ru') {
+                state.lan = 'en'
+            } else if (lan == 'en') {
+                state.lan = 'ru'
+            }
         }
     },
-    // геттеры порлучают инфо из state
+    // геттеры получают инфо из state
     getters: {
         get_version: state => state.version,
-        get_base_url: state => state.BASE_URL
+        get_base_url: state => state.BASE_URL,
+        get_lan: state => state.lan,
     },
     // Экшины делают запрос в БД и делают коммит в мутейшины
     actions: {
@@ -38,7 +48,8 @@ export default new Vuex.Store({
         auth,
         users,
         links,
-        category
+        category,
+        lang
     }
 })
 

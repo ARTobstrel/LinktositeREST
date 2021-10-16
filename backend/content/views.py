@@ -42,14 +42,14 @@ class UserDeleteView(generics.DestroyAPIView):
     """Удаление пользователя"""
     queryset = User.objects.all()
     serializer_class = UserProjectSerializer
-    # permission_classes = (IsAdminUser,)
+    permission_classes = (IsAdminUser,)
 
 
 class UserListView(generics.ListAPIView):
     """Список всех пользователей. Admin only"""
     queryset = User.objects.all()
     serializer_class = UserProjectSerializer
-    # permission_classes = (IsAdminUser,)
+    permission_classes = (IsAdminUser,)
 
 
 # Действия с категориями
@@ -57,7 +57,7 @@ class CategoryRetrieveView(generics.RetrieveAPIView):
     """Вывод категории по id"""
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    # permission_classes = (IsAuthenticated, IsOwner)
+    permission_classes = (IsAuthenticated, IsOwner)
 
 
 class CategoryCreateView(generics.CreateAPIView):
@@ -148,14 +148,12 @@ class LinkListUserView(generics.ListAPIView):
     permission_classes = (IsAuthenticated,)
 
 
-# Линки для неавторизованного пользователя
 class UnauthorizedUserLinkView(generics.ListAPIView):
     """Линки для неавторизованного пользователя"""
     serializer_class = UnauthorizedUserLinkSerializer
     queryset = UnauthorizedUserLink.objects.all()
 
 
-# Не работает
 class VersionView(generics.ListAPIView):
     """Версия и год обновления"""
     serializer_class = VersionSerializer

@@ -49,7 +49,6 @@ html {
 
 .screen {
     height: 100%;
-
 }
 
 .logo {
@@ -224,6 +223,12 @@ select {
     width: 100%;
 }
 
+.form_field__new_link {
+    text-align: center;
+    color: darkslateblue;
+    cursor: pointer
+}
+
 .helper-text.invalid {
     color: #f44336
 }
@@ -238,6 +243,10 @@ select {
 
 .jcfs {
     justify-content: flex-start;
+}
+
+.aic {
+    align-items: center;
 }
 
 .rename_btn {
@@ -302,9 +311,9 @@ select {
 /*Контейнер для линков*/
 .container {
     width: 90%;
-    height: 60%;
+    height: 620em;
     margin: 0 auto;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .container_auth {
